@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaEye, FaEdit, FaTrash, FaTimes } from "react-icons/fa";
 import FormField from "./FormField";
 
-export default function Modal({ isOpen, onClose, onAddUser }) {
+export default function Modal({ isOpen, onClose, onAddUser, selectedUser }) {
   const [formValues, setFormValues] = useState({
     prenom: "",
     nom: "",
@@ -14,16 +14,27 @@ export default function Modal({ isOpen, onClose, onAddUser }) {
 
   useEffect(() => {
     if (isOpen) {
-      setFormValues({
-        prenom: "",
-        nom: "",
-        age: "",
-        adresse: "",
-        ville: "",
-        email: "",
-      });
+      if (selectedUser) {
+        setFormValues({
+          prenom: selectedUser.name.prenom,
+          nom: selectedUser.name.nom,
+          age: selectedUser.age[0].replace(" ans", ""),
+          adresse: selectedUser.adresse,
+          ville: selectedUser.ville,
+          email: selectedUser.email,
+        });
+      } else {
+        setFormValues({
+          prenom: "",
+          nom: "",
+          age: "",
+          adresse: "",
+          ville: "",
+          email: "",
+        });
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, selectedUser]);
 
   if (!isOpen) return null;
 
@@ -63,7 +74,6 @@ export default function Modal({ isOpen, onClose, onAddUser }) {
 
     onAddUser(newUser);
 
-    // Réinitialisez les valeurs du formulaire
     setFormValues({
       prenom: "",
       nom: "",
@@ -73,7 +83,6 @@ export default function Modal({ isOpen, onClose, onAddUser }) {
       email: "",
     });
 
-    // Fermez le modal
     onClose();
   };
 

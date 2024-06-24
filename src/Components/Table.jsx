@@ -5,18 +5,16 @@ import {
 } from "material-react-table";
 import { columns } from "../Utils/Utils";
 import { MdAddCircle } from "react-icons/md";
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "./Modal";
 
 export default function Table() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
-
-  const table = useMaterialReactTable({
-    columns,
-    data,
-  });
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const openModal = () => {
+    setSelectedUser(null); 
     setIsModalOpen(true);
   };
 
@@ -25,10 +23,50 @@ export default function Table() {
   };
 
   const handleAddUser = (newUser) => {
-    console.log("Adding user:", newUser); // Debugging line
-    setData([...data, newUser]);
+    if (selectedUser !== null) {
+      // Update user
+      const updatedData = data.map((user, index) =>
+        index === selectedUser ? newUser : user
+      );
+      setData(updatedData);
+    } else {
+      // Add new user
+      setData([...data, newUser]);
+    }
     closeModal();
   };
+
+  const handleEditUser = (index) => {
+    setSelectedUser(index);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteUser = (index) => {
+    const updatedData = data.filter((_, i) => i !== index);
+    setData(updatedData);
+  };
+
+
+  data.forEach((user, index) => {
+    user.action = (
+      <div className="flex items-center">
+        <button className="pe-9">
+          <FaEye className="text-B" />
+        </button>
+        <button className="pe-9" onClick={() => handleEditUser(index)}>
+          <FaEdit className="text-O" />
+        </button>
+        <button className="pe-9" onClick={() => handleDeleteUser(index)}>
+          <FaTrash className="text-R" />
+        </button>
+      </div>
+    );
+  });
+
+  const table = useMaterialReactTable({
+    columns,
+    data,
+  });
 
   return (
     <>
@@ -49,6 +87,7 @@ export default function Table() {
           isOpen={isModalOpen}
           onClose={closeModal}
           onAddUser={handleAddUser}
+          selectedUser={selectedUser !== null ? data[selectedUser] : null}
         />
       </div>
     </>

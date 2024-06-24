@@ -3,36 +3,36 @@ import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 const a = 25
 
 // Table data
-export const data = [
-  {
-    name: {
-      prenom: "Cheikh Ahmed Tidiane",
-      nom: "Gueye",
-    },
-    age: [`${a} ans`],
-    adresse: "81 Rue Ahmadou Assane Ndoye",
-    ville: "Dakar",
-    email: "cheikhahmedtidiane219@gmail.com",
-    action: (
-      <>
-        <div className="flex items-center">
-          <button className="pe-9">
-            {" "}
-            <FaEye className="text-B"/>{" "}
-          </button>
-          <button className="pe-9">
-            {" "}
-            <FaEdit className="text-O"/>{" "}
-          </button>
-          <button className="pe-9">
-            {" "}
-            <FaTrash className="text-R"/>{" "}
-          </button>
-        </div>
-      </>
-    ),
-  },
-];
+// export const data = [
+//   {
+//     name: {
+//       prenom: "Cheikh Ahmed Tidiane",
+//       nom: "Gueye",
+//     },
+//     age: [`${a} ans`],
+//     adresse: "81 Rue Ahmadou Assane Ndoye",
+//     ville: "Dakar",
+//     email: "cheikhahmedtidiane219@gmail.com",
+//     action: (
+//       <>
+//         <div className="flex items-center">
+//           <button className="pe-9">
+//             {" "}
+//             <FaEye className="text-B"/>{" "}
+//           </button>
+//           <button className="pe-9">
+//             {" "}
+//             <FaEdit className="text-O"/>{" "}
+//           </button>
+//           <button className="pe-9">
+//             {" "}
+//             <FaTrash className="text-R"/>{" "}
+//           </button>
+//         </div>
+//       </>
+//     ),
+//   },
+// ];
 
 export const columns = [
   {

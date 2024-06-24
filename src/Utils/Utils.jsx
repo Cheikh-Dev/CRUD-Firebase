@@ -4,14 +4,13 @@ const a = 25
 
 // Table data
 export const data = [
-
   {
     name: {
       prenom: "Cheikh Ahmed Tidiane",
       nom: "Gueye",
     },
     age: [`${a} ans`],
-    address: "81 Rue Ahmadou Assane Ndoye",
+    adresse: "81 Rue Ahmadou Assane Ndoye",
     ville: "Dakar",
     email: "cheikhahmedtidiane219@gmail.com",
     action: (
@@ -52,8 +51,8 @@ export const columns = [
     size: 150,
   },
   {
-    accessorKey: "address",
-    header: "Address",
+    accessorKey: "adresse",
+    header: "Adresse",
     size: 200,
   },
   {
@@ -71,4 +70,13 @@ export const columns = [
     header: "Bouttons d'action",
     size: 150,
   },
+];
+
+export const fields = [
+  { id: "prenom", type: "text", name: "prenom", placeholder: "Prenom" },
+  { id: "nom", type: "text", name: "nom", placeholder: "Nom" },
+  { id: "age", type: "number", name: "age", placeholder: "Age" },
+  { id: "adresse", type: "text", name: "adresse", placeholder: "Adresse" },
+  { id: "ville", type: "text", name: "ville", placeholder: "Ville" },
+  { id: "email", type: "email", name: "email", placeholder: "Email Address" },
 ];

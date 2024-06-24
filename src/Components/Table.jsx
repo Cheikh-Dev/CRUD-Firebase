@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { MaterialReactTable, useMaterialReactTable} from "material-react-table";
-import { data, columns } from "../Utils/Utils";
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+} from "material-react-table";
+import { columns } from "../Utils/Utils";
 import { MdAddCircle } from "react-icons/md";
-import Modal from "../Components/Modal";
+import Modal from "./Modal";
 
 export default function Table() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState([]);
 
   const table = useMaterialReactTable({
     columns,
@@ -18,6 +22,12 @@ export default function Table() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleAddUser = (newUser) => {
+    console.log("Adding user:", newUser); // Debugging line
+    setData([...data, newUser]);
+    closeModal();
   };
 
   return (
@@ -35,7 +45,11 @@ export default function Table() {
       </div>
       <div className="w-full p-5">
         <MaterialReactTable table={table} />
-        <Modal isOpen={isModalOpen} onClose={closeModal} />
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          onAddUser={handleAddUser}
+        />
       </div>
     </>
   );

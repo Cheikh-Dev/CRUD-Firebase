@@ -16,7 +16,7 @@ const icons = {
   email: HiOutlineMail,
 };
 
-const FormInput = ({ id, type, name, placeholder }) => {
+const FormInput = ({ id, type, name, placeholder, value, onChange }) => {
   const Icon = icons[name] || HiOutlineMail;
   return (
     <div className="flex items-center border-2 mb-8 py-1 px-3 rounded-2xl">
@@ -27,6 +27,8 @@ const FormInput = ({ id, type, name, placeholder }) => {
         type={type}
         name={name}
         placeholder={placeholder}
+        value={value}
+        onChange={onChange}
       />
     </div>
   );

@@ -19,7 +19,7 @@ const icons = {
 const FormInput = ({ id, type, name, placeholder, value, onChange }) => {
   const Icon = icons[name] || HiOutlineMail;
   return (
-    <div className="flex items-center border-2 mb-8 py-1 px-3 rounded-2xl">
+    <div className="flex items-center border-2 mt-8 py-1 px-3 rounded-2xl">
       <Icon className="h-5 w-5 text-gray-400" />
       <input
         id={id}

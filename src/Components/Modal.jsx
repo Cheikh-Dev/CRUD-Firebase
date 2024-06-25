@@ -11,6 +11,7 @@ export default function Modal({ isOpen, onClose, onAddUser, selectedUser }) {
     ville: "",
     email: "",
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (isOpen) {
@@ -44,10 +45,24 @@ export default function Modal({ isOpen, onClose, onAddUser, selectedUser }) {
       ...formValues,
       [name]: value,
     });
+    setErrors({ ...errors, [name]: "" });
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formValues.prenom) newErrors.prenom = "Le prénom est requis";
+    if (!formValues.nom) newErrors.nom = "Le nom est requis";
+    if (!formValues.age) newErrors.age = "L'âge est requis";
+    if (!formValues.adresse) newErrors.adresse = "L'adresse est requise";
+    if (!formValues.ville) newErrors.ville = "La ville est requise";
+    if (!formValues.email) newErrors.email = "L'email est requis";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = () => {
-    console.log("Form values:", formValues);
+    if (!validateForm()) return;
+
     const newUser = {
       name: {
         prenom: formValues.prenom,
@@ -97,7 +112,11 @@ export default function Modal({ isOpen, onClose, onAddUser, selectedUser }) {
             </div>
           </div>
           <div className="my-5">
-            <FormField formValues={formValues} handleChange={handleChange} />
+            <FormField
+              formValues={formValues}
+              handleChange={handleChange}
+              errors={errors}
+            />
           </div>
           <div className="flex justify-end pt-2">
             <button

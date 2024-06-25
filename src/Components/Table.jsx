@@ -15,7 +15,6 @@ import {
   updateDoc,
   deleteDoc,
   doc,
-  firestore,
 } from "firebase/firestore";
 
 export default function Table() {

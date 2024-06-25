@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { FaEye, FaEdit, FaTrash, FaTimes } from "react-icons/fa";
 import FormField from "./FormField";
 
 export default function Modal({ isOpen, onClose, onAddUser, selectedUser }) {
@@ -17,6 +16,7 @@ export default function Modal({ isOpen, onClose, onAddUser, selectedUser }) {
     if (isOpen) {
       if (selectedUser) {
         setFormValues({
+          id: selectedUser.id || "",
           prenom: selectedUser.name.prenom,
           nom: selectedUser.name.nom,
           age: selectedUser.age[0].replace(" ans", ""),
@@ -26,6 +26,7 @@ export default function Modal({ isOpen, onClose, onAddUser, selectedUser }) {
         });
       } else {
         setFormValues({
+          id: "",
           prenom: "",
           nom: "",
           age: "",
@@ -64,6 +65,7 @@ export default function Modal({ isOpen, onClose, onAddUser, selectedUser }) {
     if (!validateForm()) return;
 
     const newUser = {
+      id: formValues.id,
       name: {
         prenom: formValues.prenom,
         nom: formValues.nom,
@@ -72,24 +74,12 @@ export default function Modal({ isOpen, onClose, onAddUser, selectedUser }) {
       adresse: formValues.adresse,
       ville: formValues.ville,
       email: formValues.email,
-      action: (
-        <div className="flex items-center">
-          <button className="pe-9">
-            <FaEye className="text-B" />
-          </button>
-          <button className="pe-9">
-            <FaEdit className="text-O" />
-          </button>
-          <button className="pe-9">
-            <FaTrash className="text-R" />
-          </button>
-        </div>
-      ),
     };
 
     onAddUser(newUser);
 
     setFormValues({
+      id: "",
       prenom: "",
       nom: "",
       age: "",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -7,14 +7,35 @@ import { columns } from "../Utils/Utils";
 import { MdAddCircle } from "react-icons/md";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "./Modal";
+import { db } from "../firebase";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 
 export default function Table() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, "Utilisateurs"));
+      const users = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setData(users);
+    };
+    fetchData();
+  }, []);
+
   const openModal = () => {
-    setSelectedUser(null); 
+    setSelectedUser(null);
     setIsModalOpen(true);
   };
 
@@ -22,16 +43,19 @@ export default function Table() {
     setIsModalOpen(false);
   };
 
-  const handleAddUser = (newUser) => {
+  const handleAddUser = async (newUser) => {
     if (selectedUser !== null) {
-      // Update user
-      const updatedData = data.map((user, index) =>
-        index === selectedUser ? newUser : user
+      // Update user in Firestore
+      const userDoc = doc(db, "Utilisateurs", newUser.id);
+      await updateDoc(userDoc, newUser);
+      const updatedData = data.map((user) =>
+        user.id === newUser.id ? newUser : user
       );
       setData(updatedData);
     } else {
-      // Add new user
-      setData([...data, newUser]);
+      // Add new user to Firestore
+      const docRef = await addDoc(collection(db, "Utilisateurs"), newUser);
+      setData([...data, { ...newUser, id: docRef.id }]);
     }
     closeModal();
   };
@@ -41,11 +65,12 @@ export default function Table() {
     setIsModalOpen(true);
   };
 
-  const handleDeleteUser = (index) => {
+  const handleDeleteUser = async (index) => {
+    const userToDelete = data[index];
+    await deleteDoc(doc(db, "Utilisateurs", userToDelete.id));
     const updatedData = data.filter((_, i) => i !== index);
     setData(updatedData);
   };
-
 
   data.forEach((user, index) => {
     user.action = (

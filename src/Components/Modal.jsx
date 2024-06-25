@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FaTimes } from "react-icons/fa";
 import FormField from "./FormField";
 
 export default function Modal({ isOpen, onClose, onAddUser, selectedUser }) {

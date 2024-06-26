@@ -1,14 +1,13 @@
-// firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA6EnsabcGOzBw6YSJiC3j-hb1jEpoUN9s",
-  authDomain: "react-table-crud-81daf.firebaseapp.com",
-  projectId: "react-table-crud-81daf",
-  storageBucket: "react-table-crud-81daf.appspot.com",
-  messagingSenderId: "1086624321804",
-  appId: "1:1086624321804:web:48f90bbd7b54beab73b929",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);

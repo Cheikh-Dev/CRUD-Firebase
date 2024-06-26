@@ -17,6 +17,7 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
+import { toast } from "react-toastify";
 
 export default function Table() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,32 +49,38 @@ export default function Table() {
     const existingUser = data.find((user) => user.email === newUser.email);
 
     if (existingUser) {
-      alert("Cet utilisateur existe déjà !");
+      toast.error("Cet utilisateur existe déjà !");
       return;
     }
 
-    if (selectedUser !== null) {
-      const userDoc = doc(db, "Utilisateurs", newUser.id);
-      await updateDoc(userDoc, {
-        name: newUser.name,
-        age: newUser.age,
-        adresse: newUser.adresse,
-        ville: newUser.ville,
-        email: newUser.email,
-      });
-      const updatedData = data.map((user) =>
-        user.id === newUser.id ? newUser : user
-      );
-      setData(updatedData);
-    } else {
-      const docRef = await addDoc(collection(db, "Utilisateurs"), {
-        name: newUser.name,
-        age: newUser.age,
-        adresse: newUser.adresse,
-        ville: newUser.ville,
-        email: newUser.email,
-      });
-      setData([...data, { ...newUser, id: docRef.id }]);
+    try {
+      if (selectedUser !== null) {
+        const userDoc = doc(db, "Utilisateurs", newUser.id);
+        await updateDoc(userDoc, {
+          name: newUser.name,
+          age: newUser.age,
+          adresse: newUser.adresse,
+          ville: newUser.ville,
+          email: newUser.email,
+        });
+        const updatedData = data.map((user) =>
+          user.id === newUser.id ? newUser : user
+        );
+        setData(updatedData);
+        toast.success("Utilisateur mis à jour avec succès !");
+      } else {
+        const docRef = await addDoc(collection(db, "Utilisateurs"), {
+          name: newUser.name,
+          age: newUser.age,
+          adresse: newUser.adresse,
+          ville: newUser.ville,
+          email: newUser.email,
+        });
+        setData([...data, { ...newUser, id: docRef.id }]);
+        toast.success("Utilisateur ajouté avec succès !");
+      }
+    } catch (error) {
+      toast.error("Erreur lors de l'ajout de l'utilisateur !");
     }
     closeModal();
   };
@@ -85,9 +92,14 @@ export default function Table() {
 
   const handleDeleteUser = async (index) => {
     const userToDelete = data[index];
-    await deleteDoc(doc(db, "Utilisateurs", userToDelete.id));
-    const updatedData = data.filter((_, i) => i !== index);
-    setData(updatedData);
+    try {
+      await deleteDoc(doc(db, "Utilisateurs", userToDelete.id));
+      const updatedData = data.filter((_, i) => i !== index);
+      setData(updatedData);
+      toast.success("Utilisateur supprimé avec succès !");
+    } catch (error) {
+      toast.error("Erreur lors de la suppression de l'utilisateur !");
+    }
   };
 
   data.forEach((user, index) => {

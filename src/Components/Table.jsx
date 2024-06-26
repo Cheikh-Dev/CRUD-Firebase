@@ -1,13 +1,6 @@
+// Table.jsx
 import React, { useState, useEffect } from "react";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from "material-react-table";
-import { columns } from "../Utils/Utils";
-import { MdAddCircle } from "react-icons/md";
-import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
-import Modal from "./Modal";
-import { db } from "../firebase";
+import { db } from "../Config/firebase";
 import {
   collection,
   getDocs,
@@ -16,6 +9,14 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import { MdAddCircle } from "react-icons/md";
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import Modal from "./Modal";
+import { columns } from "../Utils/Utils";
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+} from "material-react-table";
 
 export default function Table() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,43 +44,39 @@ export default function Table() {
     setIsModalOpen(false);
   };
 
-const handleAddUser = async (newUser) => {
-  // Vérifier si un utilisateur avec le même email existe déjà
-  const existingUser = data.find((user) => user.email === newUser.email);
+  const handleAddUser = async (newUser) => {
+    const existingUser = data.find((user) => user.email === newUser.email);
 
-  if (existingUser) {
-    alert("Cet utilisateur existe déjà !");
-    return; // Arrêter la fonction si l'utilisateur existe déjà
-  }
+    if (existingUser) {
+      alert("Cet utilisateur existe déjà !");
+      return;
+    }
 
-  if (selectedUser !== null) {
-    // Update user in Firestore
-    const userDoc = doc(db, "Utilisateurs", newUser.id);
-    await updateDoc(userDoc, {
-      name: newUser.name,
-      age: newUser.age,
-      adresse: newUser.adresse,
-      ville: newUser.ville,
-      email: newUser.email,
-    });
-    const updatedData = data.map((user) =>
-      user.id === newUser.id ? newUser : user
-    );
-    setData(updatedData);
-  } else {
-    // Add new user to Firestore
-    const docRef = await addDoc(collection(db, "Utilisateurs"), {
-      name: newUser.name,
-      age: newUser.age,
-      adresse: newUser.adresse,
-      ville: newUser.ville,
-      email: newUser.email,
-    });
-    setData([...data, { ...newUser, id: docRef.id }]);
-  }
-  closeModal();
-};
-
+    if (selectedUser !== null) {
+      const userDoc = doc(db, "Utilisateurs", newUser.id);
+      await updateDoc(userDoc, {
+        name: newUser.name,
+        age: newUser.age,
+        adresse: newUser.adresse,
+        ville: newUser.ville,
+        email: newUser.email,
+      });
+      const updatedData = data.map((user) =>
+        user.id === newUser.id ? newUser : user
+      );
+      setData(updatedData);
+    } else {
+      const docRef = await addDoc(collection(db, "Utilisateurs"), {
+        name: newUser.name,
+        age: newUser.age,
+        adresse: newUser.adresse,
+        ville: newUser.ville,
+        email: newUser.email,
+      });
+      setData([...data, { ...newUser, id: docRef.id }]);
+    }
+    closeModal();
+  };
 
   const handleEditUser = (index) => {
     setSelectedUser(index);

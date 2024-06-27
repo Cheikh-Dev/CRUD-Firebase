@@ -1,6 +1,7 @@
-// Table.jsx
 import React, { useState, useEffect } from "react";
 import { db } from "../Config/firebase";
+import { auth } from "../Config/firebase";
+import { SlLogout } from "react-icons/sl";
 import {
   collection,
   getDocs,
@@ -18,11 +19,13 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom"; // Import de useNavigate depuis react-router-dom
 
 export default function Table() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const navigate = useNavigate(); // Utilisation de useNavigate pour la navigation
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,6 +105,17 @@ export default function Table() {
     }
   };
 
+  const handleLogout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        navigate("/CRUD-Firebase/connexion");
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la déconnexion : ", error);
+      });
+  };
+
   data.forEach((user, index) => {
     user.action = (
       <div className="flex items-center">
@@ -126,6 +140,11 @@ export default function Table() {
   return (
     <>
       <div className="Ajouter w-full text-center py-5">
+        <div
+          className="absolute right-0 mx-2 p-2 rounded-full cursor-pointer"
+        >
+          <SlLogout className="logout" onClick={handleLogout} />
+        </div>
         <button
           onClick={openModal}
           className="px-3 md:px-4 py-1 md:py-2 bg-teal-400 border border-teal-400 text-white rounded-lg hover:bg-teal-400"

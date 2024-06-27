@@ -12,7 +12,6 @@ module.exports = {
         O: "#ffa500",
         P: "#800080",
         B: "#0000ff",
-        
       },
       fontFamily: {
         //

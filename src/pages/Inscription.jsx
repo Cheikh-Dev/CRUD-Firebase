@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import InputField from "../Components/InputField";
 import { auth } from "../Config/firebase";
 import { toast } from "react-toastify";
@@ -37,9 +33,9 @@ export default function Inscription() {
     setLoading(true);
 
     try {
-      const auth = getAuth();
       await createUserWithEmailAndPassword(auth, email, password);
       toast.success("Inscription réussie !");
+      console.log("User after sign up:", auth.currentUser);
       navigate("/CRUD-Firebase/connexion");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
